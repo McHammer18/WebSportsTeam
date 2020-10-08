@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+import model.TeamItem;
+
 /**
  * Servlet implementation class EditItemServlet
  */
@@ -34,8 +37,18 @@ public class EditItemServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		TeamItemHelper dao =new TeamItemHelper();
+		
+		String city = request.getParameter("city");
+		String nickName = request.getParameter("team");
+		int numOfPlayers = request.getIntHeader("numOfPlayers");
+		Integer tempId = Integer.parseInt(request.getParameter("id"));
+		TeamItem itemToUpdate = dao.searchForItemById(tempId);
+		itemToUpdate.setCity(city);
+		itemToUpdate.setNickName(nickName);
+		itemToUpdate.setNumOfPlayers(numOfPlayers);
+		dao.updateItem(itemToUpdate);
+		getServletContext().getRequestDispatcher("/viewAllItemsServlet").forward(request, response);;
 	}
 
 }

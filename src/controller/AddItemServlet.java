@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.TeamItem;
+
 /**
  * Servlet implementation class AddItemServlet
  */
@@ -23,19 +25,20 @@ public class AddItemServlet extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		//Variables that request the inputs of the user
+		String city = request.getParameter("city");
+		String nickName = request.getParameter("team");
+		int numOfPlayers = request.getIntHeader("numOfPlayers");
+		//Using the model and controller to add input to a table
+		TeamItem li = new TeamItem(city, nickName, numOfPlayers);
+		TeamItemHelper dao = new TeamItemHelper();
+		dao.insertItem(li);
+		
+		//Sends user back to the homepage to enter another store
+		getServletContext().getRequestDispatcher("/index.html").forward(request, response);
 	}
 
 }
